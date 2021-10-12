@@ -22,9 +22,19 @@ exports.sendMessageNotification = functions.database
           "for user:",
           receiversID
       );
+
+      //// OLD CODE ////
       // Get the device notification token.
+      // const getDeviceTokenPromise = admin.database()
+      //     .ref("/Users/{receiversID}/fcmToken").once("value");
+
+      // Get the device notification token.
+      // Pass the data from the value and return it
+      // Sample from: https://github.com/philipszdavido/contact-manager/blob/ee9652e0c01aec62c7dbb4d71d829eeca2a2dd59/firefunctions/functions/index.ts#L56
       const getDeviceTokenPromise = admin.database()
-          .ref("/Users/{receiversID}/fcmToken").once("value");
+      .ref("/Users/{receiversID}/fcmToken").once('value', (data:any) => {
+        return data.val()
+      })
 
       // Get the receiver's profile
       const getReceiversProfilePromise = admin.auth()
